@@ -100,11 +100,10 @@ public class User {
 		
 		// 관심사, 가중치 15%, 같은 관심사 1당 0.2
 		for (int i = 0; i < 5; i++) {
-			if (this.userInterests.contains(friend.GetUserInterest(i))) {
+			if (this.userInterests.contains(friend.GetUserInterest(i)) && !friend.GetUserInterest(i).equals("X")) {
 				prob += (0.15 * 0.2);
 			}
 		}
-			
 		return prob;
 	}
 }
