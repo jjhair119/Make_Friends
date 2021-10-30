@@ -50,6 +50,14 @@ public class User {
 		return this.userClub;
 	}
 	
+	String GetUserName() {
+		return this.userName;
+	}
+	
+	String GetUserGrade() {
+		return this.userGrade;
+	}
+	
 	void AddFriend(User u) {
 		friends.add(u);
 	}

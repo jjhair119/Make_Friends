@@ -1,4 +1,5 @@
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTable;
 import java.util.ArrayList;
 
 public class GUI {
@@ -83,7 +86,6 @@ public class GUI {
 		final int boxSizeX = 300;
 		final int boxSizeY = 50;
 		
-		JPanel mainPanel = new JPanel();
 		JPanel enterUserID = MakeTextField("ID 입력 : ", screenSizeX / intervalX, screenSizeY / intervalY, boxSizeX, boxSizeY);
 		JPanel enterUserName = MakeTextField("이름 입력 : ", screenSizeX / intervalX, (screenSizeY / intervalY) * 2, boxSizeX, boxSizeY);
 		JPanel selectUserGrade = MakeComboBox("학년 입력 : ", grades, screenSizeX / intervalX, (screenSizeY / intervalY) * 3, boxSizeX, boxSizeY);
@@ -133,21 +135,51 @@ public class GUI {
 			}
 		});
 
-		mainPanel.setLayout(null);
-		mainPanel.add(enterUserID);
-		mainPanel.add(enterUserName);
-		mainPanel.add(selectUserGrade);
-		mainPanel.add(selectUserClub);
-		mainPanel.add(selectUserDepartment);
-		mainPanel.add(selectUserClass);
+		this.frame.add(enterUserID);
+		this.frame.add(enterUserName);
+		this.frame.add(selectUserGrade);
+		this.frame.add(selectUserClub);
+		this.frame.add(selectUserDepartment);
+		this.frame.add(selectUserClass);
 		for (int i = 0; i < 5; i++) {
-			mainPanel.add(selectUserInterests.get(i));
+			this.frame.add(selectUserInterests.get(i));
 		}
-		mainPanel.add(createUser);
+		this.frame.add(createUser);
 		
-		this.frame.add(mainPanel);
 	    this.SetFrame();
 	}
 	
+	public void AddFriends(String userID) {
+		JLabel IdLabel = new JLabel(userID);
+	}
 	
+	public void MainScreen() {
+		JPanel mainPanel = new JPanel();
+		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[Manager.GetUsersSize()][11];
+		
+		
+		for(int i=0;i<Manager.GetUsersSize();i++) {
+			User u = Manager.GetUserByIndex(i);
+			data[i][0] = u.GetUserID();
+			data[i][1] = u.GetUserName();
+			data[i][2] = u.GetUserGrade();
+			data[i][3] = u.GetUserClub();
+			data[i][4] = u.GetUserDepartment();
+			data[i][5] = u.GetUserClass();
+			data[i][6] = u.GetUserInterest(0);
+			data[i][7] = u.GetUserInterest(1);
+			data[i][8] = u.GetUserInterest(2);
+			data[i][9] = u.GetUserInterest(3);
+			data[i][10] = u.GetUserInterest(4);
+		}
+		
+		JTable table = new JTable(data, headings);
+		table.setPreferredScrollableViewportSize(new Dimension(700,600));
+		table.setFillsViewportHeight(true);
+		
+		mainPanel.add(new JScrollPane(table));
+		this.frame.add(mainPanel);
+		this.SetFrame();
+	}
 }
