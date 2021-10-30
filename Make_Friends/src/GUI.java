@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class GUI {
 	private JFrame frame;
-	// ImageIcon frameIconImage;
-	// private final String frameIconImagePath = "FrameIcon.png"; 
+	ImageIcon frameIconImage;
+	private final String frameIconImagePath = "icon.png"; 
 	private final int screenSizeX = 1280;
 	private final int screenSizeY = 720;
 	private final String[] grades = {"1", "2", "3"};
@@ -28,7 +28,7 @@ public class GUI {
 										"독서", "TV 보기", "요리", "SNS 보기", "잠자기"};
 	
 	public GUI() {
-		// frameIconImage = new ImageIcon(frameIconImagePath);
+		frameIconImage = new ImageIcon(frameIconImagePath);
 		this.frame = new JFrame("Make Friends In Sunrin");
 	}
 	
@@ -37,7 +37,7 @@ public class GUI {
 		this.frame.setLayout(null);
 		this.frame.setLocationRelativeTo(null);
 		this.frame.setResizable(false); 
-		// this.frame.setIconImage(frameIconImage.getImage());
+		this.frame.setIconImage(frameIconImage.getImage());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setVisible(true);    
 	}
