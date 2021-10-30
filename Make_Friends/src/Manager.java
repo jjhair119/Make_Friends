@@ -39,4 +39,12 @@ public class Manager {
 		
 		return dist[end];
 	}
+	
+	public static int GetUsersSize() {
+		return users.size();
+	}
+	
+	public static User GetUserByIndex(int index) {
+		return users.get(index);
+	}
 }
