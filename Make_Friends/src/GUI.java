@@ -2,7 +2,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -12,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
 import javax.swing.JTable;
 import java.util.ArrayList;
 
@@ -161,6 +164,46 @@ public class GUI {
 		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
 		String[][] data = new String[Manager.GetUsersSize()][11];
 		
+		mainPanel.setLayout(null);
+		
+		JButton newUserButton = new JButton("새로운 유저 생성");
+		
+		mainPanel.setBackground(Color.WHITE);
+		
+		JPanel tablePanel = new JPanel();
+		tablePanel.setBounds(470, 25, 750, 650);
+		
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		JPanel buttonPanel = new JPanel();	
+		JPanel newUserPanel = new JPanel();
+		
+		buttonPanel.setLayout(null);
+		newUserPanel.setLayout(null);
+		
+		JLabel textLabel = new JLabel("유저 아이디 : ");
+		JTextField userIDtf = new JTextField(10);
+		
+		JButton FriendsButton = new JButton("친구 추가");
+		JButton PBButton = new JButton("가능성 계산");
+		
+		ImageIcon img = new ImageIcon(frameIconImagePath);
+		JLabel imgLabel = new JLabel(img);
+		
+		imgLabel.setBounds(200,100,100,100);
+		
+		buttonPanel.add(newUserButton);
+		newUserPanel.add(textLabel);
+		newUserPanel.add(userIDtf);
+		newUserPanel.add(FriendsButton);
+		newUserPanel.add(PBButton);
+		
+		buttonPanel.setBackground(Color.WHITE);
+		buttonPanel.setSize(30, 30);
+		buttonPanel.add(newUserPanel);
+		
+		mainPanel.add(buttonPanel);
+		mainPanel.add(imgLabel);
 		
 		for(int i=0;i<Manager.GetUsersSize();i++) {
 			User u = Manager.GetUserByIndex(i);
@@ -177,11 +220,29 @@ public class GUI {
 			data[i][10] = u.GetUserInterest(4);
 		}
 		
+		buttonPanel.setBounds(60, 300, 400, 330);
+		newUserButton.setBounds(50, 20, 300, 40);
+		
+		newUserPanel.setBounds(50, 80, 300, 230);
+		newUserPanel.setBackground(Color.WHITE);
+		
+		textLabel.setBounds(30, 35, 80, 30);
+		userIDtf.setBounds(105, 35, 165, 30);
+		
+		FriendsButton.setBounds(30, 100, 240, 30);
+		PBButton.setBounds(30, 165, 240, 30);
+		
 		JTable table = new JTable(data, headings);
 		table.setPreferredScrollableViewportSize(new Dimension(700,600));
 		table.setFillsViewportHeight(true);
 		
-		mainPanel.add(new JScrollPane(table));
+		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		newUserPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		tablePanel.setBackground(Color.WHITE);
+		tablePanel.add(new JScrollPane(table));
+		
+		mainPanel.add(tablePanel);
 		this.frame.add(mainPanel);
 		this.SetFrame();
 	}
