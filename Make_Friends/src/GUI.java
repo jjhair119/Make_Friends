@@ -86,6 +86,7 @@ public class GUI {
 		final int boxSizeX = 300;
 		final int boxSizeY = 50;
 		
+		JPanel mainPanel = new JPanel();
 		JPanel enterUserID = MakeTextField("ID 입력 : ", screenSizeX / intervalX, screenSizeY / intervalY, boxSizeX, boxSizeY);
 		JPanel enterUserName = MakeTextField("이름 입력 : ", screenSizeX / intervalX, (screenSizeY / intervalY) * 2, boxSizeX, boxSizeY);
 		JPanel selectUserGrade = MakeComboBox("학년 입력 : ", grades, screenSizeX / intervalX, (screenSizeY / intervalY) * 3, boxSizeX, boxSizeY);
@@ -135,17 +136,19 @@ public class GUI {
 			}
 		});
 
-		this.frame.add(enterUserID);
-		this.frame.add(enterUserName);
-		this.frame.add(selectUserGrade);
-		this.frame.add(selectUserClub);
-		this.frame.add(selectUserDepartment);
-		this.frame.add(selectUserClass);
+		mainPanel.setLayout(null);
+		mainPanel.add(enterUserID);
+		mainPanel.add(enterUserName);
+		mainPanel.add(selectUserGrade);
+		mainPanel.add(selectUserClub);
+		mainPanel.add(selectUserDepartment);
+		mainPanel.add(selectUserClass);
 		for (int i = 0; i < 5; i++) {
-			this.frame.add(selectUserInterests.get(i));
+			mainPanel.add(selectUserInterests.get(i));
 		}
-		this.frame.add(createUser);
+		mainPanel.add(createUser);
 		
+		this.frame.add(mainPanel);
 	    this.SetFrame();
 	}
 	
