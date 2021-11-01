@@ -14,7 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
 import java.util.ArrayList;
 
@@ -51,6 +53,7 @@ public class GUI {
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(s);
 		JTextField txtfield = new JTextField(10);
+		panel.setBackground(Color.WHITE);
 		panel.setBounds(x, y, sizeX, sizeY);
 		panel.add(label);
 		panel.add(txtfield);
@@ -61,6 +64,7 @@ public class GUI {
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel(s);
 		JComboBox<String> combo = new JComboBox<String>(list);
+		panel.setBackground(Color.WHITE);
 		panel.setBounds(x, y, sizeX, sizeY);
 		panel.add(label);
 		panel.add(combo);
@@ -77,10 +81,6 @@ public class GUI {
 			}
 		}
 		return null;
-	}
-	
-	void CheckOverlap() {
-		
 	}
 	
 	public void AddUserScreen() {
@@ -101,8 +101,10 @@ public class GUI {
 			selectUserInterests.add(MakeComboBox("관심사 입력 " + i + " : ", interests, screenSizeX - screenSizeX / intervalX - boxSizeX, (screenSizeY / intervalY) * i, boxSizeX, boxSizeY));
 		}
 		JButton createUser = new JButton("유저 생성");
-		
+		JButton back = new JButton("뒤로 가기");
+	
 		createUser.setBounds(screenSizeX - screenSizeX / intervalX - boxSizeX + 50, (screenSizeY / intervalY) * 6, 200, 25);
+		back.setBounds(screenSizeX - screenSizeX / intervalX - boxSizeX + 50, (screenSizeY / intervalY) * 6 + 50, 200, 25);
 		
 		createUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,12 +121,18 @@ public class GUI {
 					if (userInterests.contains(s) && !s.equals("X")) {
 						JOptionPane.showMessageDialog(null, "관심사를 중복 선택 하였는지 확인 해주세요");
 						exit = true;
+						break;
 					}
 					userInterests.add(s);
 				}
 				
 				if (userID.equals("") || userName.equals("")) {
 					JOptionPane.showMessageDialog(null, "모든 사항을 입력하였는지 확인 해주세요");
+					exit = true;
+				}
+				
+				if (Manager.CheckUserIDOverlap(userID)) {
+					JOptionPane.showMessageDialog(null, "유저 아이디가 중복 되었습니다");
 					exit = true;
 				}
 				
@@ -136,10 +144,21 @@ public class GUI {
 				
 				Manager.AddUser(userID, userName, userGrade, userClub, userDepartment, userClass, userInterests);
 				Manager.PrintAllUsers();
+				mainPanel.setVisible(false);
+				MainScreen();
+			}
+		});
+		
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainPanel.setVisible(false);
+				MainScreen();
 			}
 		});
 
 		mainPanel.setLayout(null);
+		mainPanel.setBackground(Color.WHITE);
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		mainPanel.add(enterUserID);
 		mainPanel.add(enterUserName);
 		mainPanel.add(selectUserGrade);
@@ -150,6 +169,7 @@ public class GUI {
 			mainPanel.add(selectUserInterests.get(i));
 		}
 		mainPanel.add(createUser);
+		mainPanel.add(back);
 		
 		this.frame.add(mainPanel);
 	    this.SetFrame();
@@ -167,6 +187,13 @@ public class GUI {
 		mainPanel.setLayout(null);
 		
 		JButton newUserButton = new JButton("새로운 유저 생성");
+		
+		newUserButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+			           	mainPanel.setVisible(false);
+			            AddUserScreen();
+			        }  
+			    });  
 		
 		mainPanel.setBackground(Color.WHITE);
 		
@@ -235,6 +262,17 @@ public class GUI {
 		JTable table = new JTable(data, headings);
 		table.setPreferredScrollableViewportSize(new Dimension(700,600));
 		table.setFillsViewportHeight(true);
+		
+		ListSelectionModel select= table.getSelectionModel();  
+        select.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  
+        select.addListSelectionListener(new ListSelectionListener() {  
+          public void valueChanged(ListSelectionEvent e) {  
+            String data = null;  
+            int row = table.getSelectedRow();   
+            data = (String) table.getValueAt(row, 0);
+            userIDtf.setText(data);    
+          }       
+        });  
 		
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		newUserPanel.setBorder(BorderFactory.createLineBorder(Color.black));

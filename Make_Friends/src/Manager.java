@@ -47,4 +47,13 @@ public class Manager {
 	public static User GetUserByIndex(int index) {
 		return users.get(index);
 	}
+	
+	public static boolean CheckUserIDOverlap(String s) {
+		for (int i = 0; i < users.size(); i++) {
+			if (s.equals(users.get(i).GetUserID())) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) {
 		GUI g = new GUI();
-		//g.AddUserScreen();
 		Scanner scanner = new Scanner(System.in);
 		
 		String userID = "asdf";
@@ -22,7 +21,7 @@ public class Main {
 		
 		
 		for(int i=0;i<100;i++) {
-			userName = String.valueOf(i*i*i*i*i);
+			userID = String.valueOf(i*i*i*i*i);
 			Manager.AddUser(userID, userName, userGrade, userClub, userDepartment, userClass, userInterests);
 		}
 		
