@@ -175,8 +175,74 @@ public class GUI {
 	    this.SetFrame();
 	}
 	
-	public void AddFriends(String userID) {
-		JLabel IdLabel = new JLabel(userID);
+	public void AddFriendsScreen(User user) {
+		JPanel mainPanel = new JPanel();
+		
+		JPanel nowUserPanel = new JPanel();
+		JPanel tablePanel = new JPanel();
+		
+		JLabel textLabel = new JLabel("현재 유저 아이디");
+		JLabel userIdLabel = new JLabel(user.GetUserID());
+		JTextField userIdTf = new JTextField();
+		JButton AddButton = new JButton("추가");
+		
+		ImageIcon img = new ImageIcon(frameIconImagePath);
+		JLabel imgLabel = new JLabel(img);
+		
+		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[Manager.GetUsersSize()][11];
+		
+		for(int i=0;i<Manager.GetUsersSize();i++) {
+			User u = Manager.GetUserByIndex(i);
+			data[i][0] = u.GetUserID();
+			data[i][1] = u.GetUserName();
+			data[i][2] = u.GetUserGrade();
+			data[i][3] = u.GetUserClub();
+			data[i][4] = u.GetUserDepartment();
+			data[i][5] = u.GetUserClass();
+			data[i][6] = u.GetUserInterest(0);
+			data[i][7] = u.GetUserInterest(1);
+			data[i][8] = u.GetUserInterest(2);
+			data[i][9] = u.GetUserInterest(3);
+			data[i][10] = u.GetUserInterest(4);
+		}
+		
+		JTable frendTable = new JTable(data, headings);
+		frendTable.setPreferredScrollableViewportSize(new Dimension(700,600));
+		frendTable.setFillsViewportHeight(true);
+		
+		mainPanel.setBackground(Color.WHITE);
+		nowUserPanel.setBackground(Color.WHITE);
+		tablePanel.setBackground(Color.WHITE);
+		
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		nowUserPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		mainPanel.setLayout(null);
+		nowUserPanel.setLayout(null);
+		
+		nowUserPanel.add(textLabel);
+		nowUserPanel.add(userIdLabel);
+		nowUserPanel.add(userIdTf);
+		nowUserPanel.add(AddButton);
+		
+		tablePanel.add(new JScrollPane(frendTable));
+		
+		mainPanel.add(imgLabel);
+		mainPanel.add(nowUserPanel);
+		mainPanel.add(tablePanel);
+		
+		imgLabel.setBounds(200,100,100,100);
+		nowUserPanel.setBounds(60, 300, 400, 330);
+		tablePanel.setBounds(470, 25, 750, 650);
+		
+		textLabel.setBounds(50, 55, 300, 20);
+		userIdLabel.setBounds(50, 75, 300, 20);
+		userIdTf.setBounds(50, 150, 300, 35);
+		AddButton.setBounds(50, 235, 300, 35);
+		
+		this.frame.add(mainPanel);
+		this.SetFrame();
 	}
 	
 	public void MainScreen() {
