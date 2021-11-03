@@ -1,10 +1,8 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
 		GUI g = new GUI();
-		Scanner scanner = new Scanner(System.in);
 		
 		String userID = "asdf";
 		String userName = "asdf";

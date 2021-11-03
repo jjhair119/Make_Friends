@@ -350,4 +350,8 @@ public class GUI {
 		this.frame.add(mainPanel);
 		this.SetFrame();
 	}
+	
+	public void ProbabilityCalculationScreen() {
+		
+	}
 }
