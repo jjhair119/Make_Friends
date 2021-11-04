@@ -185,6 +185,14 @@ public class GUI {
 		JLabel userIdLabel = new JLabel(user.GetUserID());
 		JTextField userIdTf = new JTextField();
 		JButton AddButton = new JButton("추가");
+		JButton backButton = new JButton("뒤로 가기");
+		
+		backButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+			           	mainPanel.setVisible(false);
+			            MainScreen();
+			        }  
+			    });  
 		
 		ImageIcon img = new ImageIcon(frameIconImagePath);
 		JLabel imgLabel = new JLabel(img);
@@ -225,6 +233,7 @@ public class GUI {
 		nowUserPanel.add(userIdLabel);
 		nowUserPanel.add(userIdTf);
 		nowUserPanel.add(AddButton);
+		nowUserPanel.add(backButton);
 		
 		tablePanel.add(new JScrollPane(frendTable));
 		
@@ -238,8 +247,9 @@ public class GUI {
 		
 		textLabel.setBounds(50, 55, 300, 20);
 		userIdLabel.setBounds(50, 75, 300, 20);
-		userIdTf.setBounds(50, 150, 300, 35);
-		AddButton.setBounds(50, 235, 300, 35);
+		userIdTf.setBounds(50, 130, 300, 35);
+		AddButton.setBounds(50, 195, 300, 35);
+		backButton.setBounds(50, 260, 300, 35);
 		
 		this.frame.add(mainPanel);
 		this.SetFrame();
@@ -279,6 +289,32 @@ public class GUI {
 		
 		JButton FriendsButton = new JButton("친구 추가");
 		JButton PBButton = new JButton("가능성 계산");
+		
+		FriendsButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){   	
+			           	User user = Manager.GetUserByUserID(userIDtf.getText());
+			           	if (user != null) {
+			           		mainPanel.setVisible(false);
+			           		AddFriendsScreen(user);
+			           	}
+			           	else {
+			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다.");
+			           	}
+			        }  
+			    });  
+		
+		PBButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+			           	User user = Manager.GetUserByUserID(userIDtf.getText());
+			           	if (user != null) {
+			           		mainPanel.setVisible(false);
+			           		ProbabilityCalculationScreen(user);
+			           	}
+			           	else {
+			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다.");
+			           	}
+			        }  
+			    });  
 		
 		ImageIcon img = new ImageIcon(frameIconImagePath);
 		JLabel imgLabel = new JLabel(img);
@@ -351,7 +387,7 @@ public class GUI {
 		this.SetFrame();
 	}
 	
-	public void ProbabilityCalculationScreen() {
-		
+	public void ProbabilityCalculationScreen(User user) {
+		// 너 하셈
 	}
 }

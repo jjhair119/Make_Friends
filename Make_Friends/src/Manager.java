@@ -44,6 +44,15 @@ public class Manager {
 		return users.size();
 	}
 	
+	public static User GetUserByUserID(String userID) {
+		for (int i = 0; i < users.size(); i++) {
+			if (userID.equals(users.get(i).GetUserID())) {
+				return users.get(i);
+			}
+		}
+		return null;
+	}
+	
 	public static User GetUserByIndex(int index) {
 		return users.get(index);
 	}
