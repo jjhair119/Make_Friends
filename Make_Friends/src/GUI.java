@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
@@ -181,8 +182,8 @@ public class GUI {
 		JPanel nowUserPanel = new JPanel();
 		JPanel tablePanel = new JPanel();
 		
-		JLabel textLabel = new JLabel("현재 유저 아이디");
-		JLabel userIdLabel = new JLabel(user.GetUserID());
+		JLabel textLabel = new JLabel("현재 유저 아이디", SwingConstants.CENTER);
+		JLabel userIdLabel = new JLabel(user.GetUserID(), SwingConstants.CENTER);
 		JTextField userIdTf = new JTextField();
 		JButton AddButton = new JButton("추가");
 		JButton backButton = new JButton("뒤로 가기");
@@ -225,6 +226,9 @@ public class GUI {
 		
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		nowUserPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		textLabel.setFont(nowUserPanel.getFont().deriveFont(17.0f));
+		userIdLabel.setFont(nowUserPanel.getFont().deriveFont(17.0f));
 		
 		mainPanel.setLayout(null);
 		nowUserPanel.setLayout(null);
@@ -388,6 +392,69 @@ public class GUI {
 	}
 	
 	public void ProbabilityCalculationScreen(User user) {
-		// 너 하셈
+		JPanel mainPanel = new JPanel();
+		
+		JPanel tablePanel = new JPanel();
+		
+		JLabel textLabel = new JLabel("현재 유저 아이디", SwingConstants.CENTER);
+		JLabel userIdLabel = new JLabel(user.GetUserID(), SwingConstants.CENTER);
+		JButton backButton = new JButton("뒤로 가기");
+		
+		ImageIcon img = new ImageIcon(frameIconImagePath);
+		JLabel imgLabel = new JLabel(img);
+		
+		mainPanel.setLayout(null);
+		
+		mainPanel.setBackground(Color.WHITE);
+		tablePanel.setBackground(Color.WHITE);
+		
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		textLabel.setFont(mainPanel.getFont().deriveFont(17.0f));
+		userIdLabel.setFont(mainPanel.getFont().deriveFont(17.0f));
+		
+		String[] headings = new String[] {"순위", "ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[Manager.GetUsersSize()][12];
+		
+		for(int i=0;i<5;i++) {
+			User u = Manager.GetUserByIndex(i);
+			data[i][0] = String.valueOf(i+1);
+			data[i][1] = u.GetUserID();
+			data[i][2] = u.GetUserName();
+			data[i][3] = u.GetUserGrade();
+			data[i][4] = u.GetUserClub();
+			data[i][5] = u.GetUserDepartment();
+			data[i][6] = u.GetUserClass();
+			data[i][7] = u.GetUserInterest(0);
+			data[i][8] = u.GetUserInterest(1);
+			data[i][9] = u.GetUserInterest(2);
+			data[i][10] = u.GetUserInterest(3);
+			data[i][11] = u.GetUserInterest(4);
+		}
+		
+		JTable frendTable = new JTable(data, headings);
+		//frendTable.setPreferredScrollableViewportSize(new Dimension(700,100));
+		//frendTable.setFillsViewportHeight(true);
+		
+		imgLabel.setBounds(590,50,100,100);
+		tablePanel.setBounds(290, 275, 750, 250);
+		textLabel.setBounds(490, 185, 300, 20);
+		userIdLabel.setBounds(490, 205, 300, 20);
+		backButton.setBounds(490, 560, 300, 40);
+		
+		tablePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		tablePanel.add(frendTable);
+		
+		mainPanel.add(textLabel);
+		mainPanel.add(userIdLabel);
+		
+		mainPanel.add(imgLabel);
+		mainPanel.add(tablePanel);
+		mainPanel.add(backButton);
+		
+		mainPanel.add(tablePanel);
+		this.frame.add(mainPanel);
+		this.SetFrame();
 	}
 }
