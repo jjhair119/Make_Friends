@@ -187,6 +187,8 @@ public class GUI {
 		JButton AddButton = new JButton("추가");
 		JButton backButton = new JButton("뒤로 가기");
 		
+		ArrayList<User> userFriends = user.GetUserFriends();
+		
 		backButton.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){  
 			           	mainPanel.setVisible(false);
@@ -198,10 +200,10 @@ public class GUI {
 		JLabel imgLabel = new JLabel(img);
 		
 		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
-		String[][] data = new String[Manager.GetUsersSize()][11];
+		String[][] data = new String[userFriends.size()][11];
 		
-		for(int i=0;i<Manager.GetUsersSize();i++) {
-			User u = Manager.GetUserByIndex(i);
+		for(int i = 0; i < userFriends.size(); i++) {
+			User u = Manager.GetUserByUserID(userFriends.get(i).GetUserID());
 			data[i][0] = u.GetUserID();
 			data[i][1] = u.GetUserName();
 			data[i][2] = u.GetUserGrade();
@@ -251,6 +253,24 @@ public class GUI {
 		AddButton.setBounds(50, 195, 300, 35);
 		backButton.setBounds(50, 260, 300, 35);
 		
+		AddButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+						User u = Manager.GetUserByUserID(userIdTf.getText());
+						for (int i = 0; i < userFriends.size(); i++) {
+							if (userFriends.get(i) == u) {
+								JOptionPane.showMessageDialog(null, "이미 친구인 유저입니다");
+								return;
+							}
+						}
+						if (u != null) {
+							user.AddFriend(u);
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다");
+						}
+			        }  
+			    });  
+		
 		this.frame.add(mainPanel);
 		this.SetFrame();
 	}
@@ -298,7 +318,7 @@ public class GUI {
 			           		AddFriendsScreen(user);
 			           	}
 			           	else {
-			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다.");
+			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다");
 			           	}
 			        }  
 			    });  
@@ -311,7 +331,7 @@ public class GUI {
 			           		ProbabilityCalculationScreen(user);
 			           	}
 			           	else {
-			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다.");
+			           		JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다");
 			           	}
 			        }  
 			    });  
