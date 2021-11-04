@@ -4,23 +4,15 @@ public class Main {
 	public static void main(String[] args) {
 		GUI g = new GUI();
 		
-		String userID = "asdf";
-		String userName = "asdf";
-		String userGrade = "asdf";
-		String userClub = "asdf";
-		String userDepartment = "asdf";
-		String userClass = "asdf";
 		ArrayList<String> userInterests = new ArrayList<String>();
-		userInterests.add("asdf");
-		userInterests.add("asdf");
-		userInterests.add("asdf");
-		userInterests.add("asdf");
-		userInterests.add("asdf");
-		
+		userInterests.add("X");
+		userInterests.add("X");
+		userInterests.add("X");
+		userInterests.add("X");
+		userInterests.add("X");
 		
 		for(int i=0;i<100;i++) {
-			userID = String.valueOf(i*i*i*i*i);
-			Manager.AddUser(userID, userName, userGrade, userClub, userDepartment, userClass, userInterests);
+			Manager.AddUser(String.valueOf(i + 1), "아무개", "2", "SHARC", "소프트웨어과", "5", userInterests);
 		}
 		
 		g.MainScreen();

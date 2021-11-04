@@ -176,6 +176,32 @@ public class GUI {
 	    this.SetFrame();
 	}
 	
+	JTable MakeTable(ArrayList<User> userFriends) {
+		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[userFriends.size()][11];
+		
+		for(int i = 0; i < userFriends.size(); i++) {
+			User u = Manager.GetUserByUserID(userFriends.get(i).GetUserID());
+			data[i][0] = u.GetUserID();
+			data[i][1] = u.GetUserName();
+			data[i][2] = u.GetUserGrade();
+			data[i][3] = u.GetUserClub();
+			data[i][4] = u.GetUserDepartment();
+			data[i][5] = u.GetUserClass();
+			data[i][6] = u.GetUserInterest(0);
+			data[i][7] = u.GetUserInterest(1);
+			data[i][8] = u.GetUserInterest(2);
+			data[i][9] = u.GetUserInterest(3);
+			data[i][10] = u.GetUserInterest(4);
+		}
+		
+		JTable table = new JTable(data, headings);
+		table.setPreferredScrollableViewportSize(new Dimension(700,600));
+		table.setFillsViewportHeight(true);
+		
+		return table;
+	}
+	
 	public void AddFriendsScreen(User user) {
 		JPanel mainPanel = new JPanel();
 		
@@ -200,28 +226,6 @@ public class GUI {
 		ImageIcon img = new ImageIcon(frameIconImagePath);
 		JLabel imgLabel = new JLabel(img);
 		
-		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
-		String[][] data = new String[userFriends.size()][11];
-		
-		for(int i = 0; i < userFriends.size(); i++) {
-			User u = Manager.GetUserByUserID(userFriends.get(i).GetUserID());
-			data[i][0] = u.GetUserID();
-			data[i][1] = u.GetUserName();
-			data[i][2] = u.GetUserGrade();
-			data[i][3] = u.GetUserClub();
-			data[i][4] = u.GetUserDepartment();
-			data[i][5] = u.GetUserClass();
-			data[i][6] = u.GetUserInterest(0);
-			data[i][7] = u.GetUserInterest(1);
-			data[i][8] = u.GetUserInterest(2);
-			data[i][9] = u.GetUserInterest(3);
-			data[i][10] = u.GetUserInterest(4);
-		}
-		
-		JTable frendTable = new JTable(data, headings);
-		frendTable.setPreferredScrollableViewportSize(new Dimension(700,600));
-		frendTable.setFillsViewportHeight(true);
-		
 		mainPanel.setBackground(Color.WHITE);
 		nowUserPanel.setBackground(Color.WHITE);
 		tablePanel.setBackground(Color.WHITE);
@@ -241,7 +245,7 @@ public class GUI {
 		nowUserPanel.add(AddButton);
 		nowUserPanel.add(backButton);
 		
-		tablePanel.add(new JScrollPane(frendTable));
+		tablePanel.add(new JScrollPane(MakeTable(userFriends)));
 		
 		mainPanel.add(imgLabel);
 		mainPanel.add(nowUserPanel);
@@ -260,14 +264,29 @@ public class GUI {
 		AddButton.addActionListener(new ActionListener(){  
 			public void actionPerformed(ActionEvent e){  
 						User u = Manager.GetUserByUserID(userIdTf.getText());
+
 						for (int i = 0; i < userFriends.size(); i++) {
 							if (userFriends.get(i) == u) {
 								JOptionPane.showMessageDialog(null, "이미 친구인 유저입니다");
 								return;
 							}
 						}
+						
+						if (user == u) {
+							JOptionPane.showMessageDialog(null, "본인의 아이디 입니다");
+							return;
+						}
+						
 						if (u != null) {
 							user.AddFriend(u);
+							
+							tablePanel.setVisible(false);
+							tablePanel.removeAll();
+							tablePanel.add(new JScrollPane(MakeTable(userFriends)));
+							tablePanel.setVisible(true);
+							
+							userIdTf.setText("");
+							JOptionPane.showMessageDialog(null, "친구 추가에 성공했습니다");
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "없는 유저 아이디 입니다");
@@ -419,6 +438,13 @@ public class GUI {
 		JLabel textLabel = new JLabel("현재 유저 아이디", SwingConstants.CENTER);
 		JLabel userIdLabel = new JLabel(user.GetUserID(), SwingConstants.CENTER);
 		JButton backButton = new JButton("뒤로 가기");
+		
+		backButton.addActionListener(new ActionListener(){  
+			public void actionPerformed(ActionEvent e){  
+						mainPanel.setVisible(false);
+						MainScreen();
+			        }  
+			    });  
 		
 		ImageIcon img = new ImageIcon(frameIconImagePath);
 		JLabel imgLabel = new JLabel(img);
