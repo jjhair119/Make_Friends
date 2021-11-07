@@ -5,8 +5,8 @@ import java.util.Queue;
 public class Manager {
 	private static ArrayList<User> users = new ArrayList<User>();
 	
-	public static void AddUser(String userID, String userName, String userGrade, String userClub, String userDepartment, String userClass, ArrayList<String> userInterests) {
-		users.add(new User(users.size(), userID, userName, userGrade, userClub, userDepartment, userClass, userInterests));
+	public static void AddUser(String userID, String userName, String userClub, String userDepartment, String userClass, ArrayList<String> userInterests) {
+		users.add(new User(users.size(), userID, userName, userClub, userDepartment, userClass, userInterests));
 	}
 	
 	public static void PrintAllUsers() {
@@ -18,11 +18,13 @@ public class Manager {
 	public static int FindFriendDistance(int start, int end) {
 		int[] dist = new int[users.size()];
 		Queue<Integer> q = new LinkedList<>();
-
+	
 		q.add(start);
-		dist[0] = 0;
-		for (int i = 1; i < dist.length; i++) {
-			dist[i] = -1;
+		dist[start] = 0;
+		for (int i = 0; i < dist.length; i++) {
+			if (i != start) {
+				dist[i] = -1;
+			}
 		}
 		
 		while(!q.isEmpty()) {

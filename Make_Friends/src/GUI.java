@@ -20,6 +20,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class GUI {
 	private JFrame frame;
@@ -27,7 +29,6 @@ public class GUI {
 	private final String frameIconImagePath = "icon.png"; 
 	private final int screenSizeX = 1280;
 	private final int screenSizeY = 720;
-	private final String[] grades = {"1", "2", "3"};
 	private final String[] clubs = {"ZerOpen", "RG", "IWOP", "AppplePie", "AnA",
 									"EDCAN", "SIRI", "SHARC", "EVOLUTION", "자의누리",
 									"MIR", "TATE", "Vfriends", "아우내"};
@@ -35,6 +36,27 @@ public class GUI {
 	private final String[] classes = {"4", "5", "6", "10", "11", "12"};
 	private final String[] interests = {"X", "게임", "음악", "개발", "영화 감상", "자전거 타기", "운동 하기",
 										"독서", "TV 보기", "요리", "SNS 보기", "잠자기"};
+	
+	class Pair implements Comparable<Pair>{
+		String userID;
+		double prob;
+		
+		Pair(String userID, double prob){
+			this.userID = userID;
+			this.prob = prob;
+		}
+
+		@Override
+		public int compareTo(GUI.Pair o) {
+			if (o.prob - this.prob > 0)
+				return 1;
+			else if (o.prob - this.prob< 0)
+				return -1;
+			else
+				return 0;
+		}
+		
+	}
 	
 	public GUI() {
 		frameIconImage = new ImageIcon(frameIconImagePath);
@@ -93,10 +115,9 @@ public class GUI {
 		JPanel mainPanel = new JPanel();
 		JPanel enterUserID = MakeTextField("ID 입력 : ", screenSizeX / intervalX, screenSizeY / intervalY, boxSizeX, boxSizeY);
 		JPanel enterUserName = MakeTextField("이름 입력 : ", screenSizeX / intervalX, (screenSizeY / intervalY) * 2, boxSizeX, boxSizeY);
-		JPanel selectUserGrade = MakeComboBox("학년 입력 : ", grades, screenSizeX / intervalX, (screenSizeY / intervalY) * 3, boxSizeX, boxSizeY);
-		JPanel selectUserClub = MakeComboBox("동아리 입력 : ", clubs, screenSizeX / intervalX, (screenSizeY / intervalY) * 4, boxSizeX, boxSizeY);
-		JPanel selectUserDepartment = MakeComboBox("학과 입력 : ", departments, screenSizeX / intervalX, (screenSizeY / intervalY) * 5, boxSizeX, boxSizeY);
-		JPanel selectUserClass = MakeComboBox("반 입력 : ", classes, screenSizeX / intervalX, (screenSizeY / intervalY) * 6, boxSizeX, boxSizeY);
+		JPanel selectUserClub = MakeComboBox("동아리 입력 : ", clubs, screenSizeX / intervalX, (screenSizeY / intervalY) * 3, boxSizeX, boxSizeY);
+		JPanel selectUserDepartment = MakeComboBox("학과 입력 : ", departments, screenSizeX / intervalX, (screenSizeY / intervalY) * 4, boxSizeX, boxSizeY);
+		JPanel selectUserClass = MakeComboBox("반 입력 : ", classes, screenSizeX / intervalX, (screenSizeY / intervalY) * 5, boxSizeX, boxSizeY);
 		ArrayList<JPanel> selectUserInterests = new ArrayList<JPanel>();
 		for (int i = 1; i <= 5; i++) {
 			selectUserInterests.add(MakeComboBox("관심사 입력 " + i + " : ", interests, screenSizeX - screenSizeX / intervalX - boxSizeX, (screenSizeY / intervalY) * i, boxSizeX, boxSizeY));
@@ -112,7 +133,6 @@ public class GUI {
 				boolean exit = false;
 				String userID = GetText(enterUserID);
 				String userName = GetText(enterUserName);
-				String userGrade = GetText(selectUserGrade);
 				String userClub = GetText(selectUserClub);
 				String userDepartment = GetText(selectUserDepartment);
 				String userClass = GetText(selectUserClass);
@@ -143,7 +163,7 @@ public class GUI {
 				
 				JOptionPane.showMessageDialog(null, "유저 생성 성공");
 				
-				Manager.AddUser(userID, userName, userGrade, userClub, userDepartment, userClass, userInterests);
+				Manager.AddUser(userID, userName, userClub, userDepartment, userClass, userInterests);
 				Manager.PrintAllUsers();
 				mainPanel.setVisible(false);
 				MainScreen();
@@ -162,7 +182,6 @@ public class GUI {
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		mainPanel.add(enterUserID);
 		mainPanel.add(enterUserName);
-		mainPanel.add(selectUserGrade);
 		mainPanel.add(selectUserClub);
 		mainPanel.add(selectUserDepartment);
 		mainPanel.add(selectUserClass);
@@ -177,22 +196,21 @@ public class GUI {
 	}
 	
 	JTable MakeTable(ArrayList<User> userFriends) {
-		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
-		String[][] data = new String[userFriends.size()][11];
+		String[] headings = new String[] {"ID", "이름", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[userFriends.size()][10];
 		
 		for(int i = 0; i < userFriends.size(); i++) {
 			User u = Manager.GetUserByUserID(userFriends.get(i).GetUserID());
 			data[i][0] = u.GetUserID();
 			data[i][1] = u.GetUserName();
-			data[i][2] = u.GetUserGrade();
-			data[i][3] = u.GetUserClub();
-			data[i][4] = u.GetUserDepartment();
-			data[i][5] = u.GetUserClass();
-			data[i][6] = u.GetUserInterest(0);
-			data[i][7] = u.GetUserInterest(1);
-			data[i][8] = u.GetUserInterest(2);
-			data[i][9] = u.GetUserInterest(3);
-			data[i][10] = u.GetUserInterest(4);
+			data[i][2] = u.GetUserClub();
+			data[i][3] = u.GetUserDepartment();
+			data[i][4] = u.GetUserClass();
+			data[i][5] = u.GetUserInterest(0);
+			data[i][6] = u.GetUserInterest(1);
+			data[i][7] = u.GetUserInterest(2);
+			data[i][8] = u.GetUserInterest(3);
+			data[i][9] = u.GetUserInterest(4);
 		}
 		
 		JTable table = new JTable(data, headings);
@@ -279,6 +297,7 @@ public class GUI {
 						
 						if (u != null) {
 							user.AddFriend(u);
+							u.AddFriend(user);
 							
 							tablePanel.setVisible(false);
 							tablePanel.removeAll();
@@ -300,8 +319,8 @@ public class GUI {
 	
 	public void MainScreen() {
 		JPanel mainPanel = new JPanel();
-		String[] headings = new String[] {"ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
-		String[][] data = new String[Manager.GetUsersSize()][11];
+		String[] headings = new String[] {"ID", "이름", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
+		String[][] data = new String[Manager.GetUsersSize()][10];
 		
 		mainPanel.setLayout(null);
 		
@@ -381,15 +400,14 @@ public class GUI {
 			User u = Manager.GetUserByIndex(i);
 			data[i][0] = u.GetUserID();
 			data[i][1] = u.GetUserName();
-			data[i][2] = u.GetUserGrade();
-			data[i][3] = u.GetUserClub();
-			data[i][4] = u.GetUserDepartment();
-			data[i][5] = u.GetUserClass();
-			data[i][6] = u.GetUserInterest(0);
-			data[i][7] = u.GetUserInterest(1);
-			data[i][8] = u.GetUserInterest(2);
-			data[i][9] = u.GetUserInterest(3);
-			data[i][10] = u.GetUserInterest(4);
+			data[i][2] = u.GetUserClub();
+			data[i][3] = u.GetUserDepartment();
+			data[i][4] = u.GetUserClass();
+			data[i][5] = u.GetUserInterest(0);
+			data[i][6] = u.GetUserInterest(1);
+			data[i][7] = u.GetUserInterest(2);
+			data[i][8] = u.GetUserInterest(3);
+			data[i][9] = u.GetUserInterest(4);
 		}
 		
 		buttonPanel.setBounds(60, 300, 400, 330);
@@ -459,38 +477,48 @@ public class GUI {
 		textLabel.setFont(mainPanel.getFont().deriveFont(17.0f));
 		userIdLabel.setFont(mainPanel.getFont().deriveFont(17.0f));
 		
-		String[] headings = new String[] {"순위", "ID", "이름", "학년", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5"};
-		String[][] data = new String[Manager.GetUsersSize()][12];
+		String[] headings = new String[] {"순위", "ID", "이름", "동아리", "학과", "반", "관심사1", "관심사2", "관심사3", "관심사4", "관심사5", "확률"};
+		String[][] data = new String[5][12];
 		
-		for(int i=0;i<5;i++) {
+		ArrayList<Pair> p = new ArrayList<Pair>();
+		
+		for (int i = 0; i < Manager.GetUsersSize(); i++) {
 			User u = Manager.GetUserByIndex(i);
+			
+			if (user != u && !user.IsFriend(u)) {
+				p.add(new Pair(u.GetUserID(), user.CalculateProbability(u)));
+			}
+		}
+		
+		Collections.sort(p);
+		
+		for(int i = 0; i < 5; i++) {
+			User u = Manager.GetUserByUserID(p.get(i).userID);
 			data[i][0] = String.valueOf(i+1);
 			data[i][1] = u.GetUserID();
 			data[i][2] = u.GetUserName();
-			data[i][3] = u.GetUserGrade();
-			data[i][4] = u.GetUserClub();
-			data[i][5] = u.GetUserDepartment();
-			data[i][6] = u.GetUserClass();
-			data[i][7] = u.GetUserInterest(0);
-			data[i][8] = u.GetUserInterest(1);
-			data[i][9] = u.GetUserInterest(2);
-			data[i][10] = u.GetUserInterest(3);
-			data[i][11] = u.GetUserInterest(4);
+			data[i][3] = u.GetUserClub();
+			data[i][4] = u.GetUserDepartment();
+			data[i][5] = u.GetUserClass();
+			data[i][6] = u.GetUserInterest(0);
+			data[i][7] = u.GetUserInterest(1);
+			data[i][8] = u.GetUserInterest(2);
+			data[i][9] = u.GetUserInterest(3);
+			data[i][10] = u.GetUserInterest(4);
+			data[i][11] = String.valueOf((int)(p.get(i).prob * 100)) + "%";
 		}
 		
 		JTable frendTable = new JTable(data, headings);
-		//frendTable.setPreferredScrollableViewportSize(new Dimension(700,100));
-		//frendTable.setFillsViewportHeight(true);
+		frendTable.setPreferredScrollableViewportSize(new Dimension(800,80));
+		frendTable.setFillsViewportHeight(true);
 		
 		imgLabel.setBounds(590,50,100,100);
-		tablePanel.setBounds(290, 275, 750, 250);
+		tablePanel.setBounds(215, 325, 850, 150);
 		textLabel.setBounds(490, 185, 300, 20);
 		userIdLabel.setBounds(490, 205, 300, 20);
 		backButton.setBounds(490, 560, 300, 40);
 		
-		tablePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		tablePanel.add(frendTable);
+		tablePanel.add(new JScrollPane(frendTable));
 		
 		mainPanel.add(textLabel);
 		mainPanel.add(userIdLabel);
