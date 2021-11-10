@@ -25,8 +25,12 @@ import java.util.Collections;
 
 public class GUI {
 	private JFrame frame;
-	ImageIcon frameIconImage;
-	private final String frameIconImagePath = "icon.png"; 
+	ImageIcon mainImage;
+	ImageIcon friendImage;
+	ImageIcon probImage;
+	private final String mainImagePath = "Main_Image.png"; 
+	private final String friendImagePath = "Friend_Image.png"; 
+	private final String probImagePath = "Prob_Image.png"; 
 	private final int screenSizeX = 1280;
 	private final int screenSizeY = 720;
 	private final String[] clubs = {"ZerOpen", "RG", "IWOP", "AppplePie", "AnA",
@@ -59,7 +63,9 @@ public class GUI {
 	}
 	
 	public GUI() {
-		frameIconImage = new ImageIcon(frameIconImagePath);
+		mainImage = new ImageIcon(mainImagePath);
+		friendImage = new ImageIcon(friendImagePath);
+		probImage = new ImageIcon(probImagePath);
 		this.frame = new JFrame("Make Friends In Sunrin");
 	}
 	
@@ -67,7 +73,7 @@ public class GUI {
 		this.frame.setSize(screenSizeX, screenSizeY);
 		this.frame.setLocationRelativeTo(null);
 		this.frame.setResizable(false); 
-		this.frame.setIconImage(frameIconImage.getImage());
+		this.frame.setIconImage(this.mainImage.getImage());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setVisible(true);    
 	}
@@ -241,8 +247,7 @@ public class GUI {
 			        }  
 			    });  
 		
-		ImageIcon img = new ImageIcon(frameIconImagePath);
-		JLabel imgLabel = new JLabel(img);
+		JLabel imgLabel = new JLabel(friendImage);
 		
 		mainPanel.setBackground(Color.WHITE);
 		nowUserPanel.setBackground(Color.WHITE);
@@ -269,7 +274,7 @@ public class GUI {
 		mainPanel.add(nowUserPanel);
 		mainPanel.add(tablePanel);
 		
-		imgLabel.setBounds(200,100,100,100);
+		imgLabel.setBounds(175, 75, 150, 150);
 		nowUserPanel.setBounds(60, 300, 400, 330);
 		tablePanel.setBounds(470, 25, 750, 650);
 		
@@ -378,10 +383,9 @@ public class GUI {
 			        }  
 			    });  
 		
-		ImageIcon img = new ImageIcon(frameIconImagePath);
-		JLabel imgLabel = new JLabel(img);
+		JLabel imgLabel = new JLabel(mainImage);
 		
-		imgLabel.setBounds(200,100,100,100);
+		imgLabel.setBounds(175,75,150,150);
 		
 		buttonPanel.add(newUserButton);
 		newUserPanel.add(textLabel);
@@ -464,8 +468,7 @@ public class GUI {
 			        }  
 			    });  
 		
-		ImageIcon img = new ImageIcon(frameIconImagePath);
-		JLabel imgLabel = new JLabel(img);
+		JLabel imgLabel = new JLabel(probImage);
 		
 		mainPanel.setLayout(null);
 		
@@ -512,11 +515,11 @@ public class GUI {
 		frendTable.setPreferredScrollableViewportSize(new Dimension(800,80));
 		frendTable.setFillsViewportHeight(true);
 		
-		imgLabel.setBounds(590,50,100,100);
-		tablePanel.setBounds(215, 325, 850, 150);
-		textLabel.setBounds(490, 185, 300, 20);
-		userIdLabel.setBounds(490, 205, 300, 20);
-		backButton.setBounds(490, 560, 300, 40);
+		imgLabel.setBounds(screenSizeX / 2 - 75, 75,150,150);
+		tablePanel.setBounds(screenSizeX / 2 - 425, 305, 850, 150);
+		textLabel.setBounds(screenSizeX / 2 - 150, 230, 300, 20);
+		userIdLabel.setBounds(screenSizeX / 2 - 150, 255, 300, 20);
+		backButton.setBounds(screenSizeX / 2 - 150, 460, 300, 40);
 		
 		tablePanel.add(new JScrollPane(frendTable));
 		
